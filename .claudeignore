@@ -1,0 +1,8 @@
+node_modules/
+dist/
+build/
+coverage/
+*.lock
+*.min.js
+*.min.css
+.idea/
