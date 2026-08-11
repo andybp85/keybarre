@@ -1,0 +1,26 @@
+{
+    "name": "music-app-keyboard-shortcuts",
+    "version": "0.0.0",
+    "description": "Standard keyboard shortcuts for Electron music apps: keymap, dispatcher, help overlay",
+    "license": "MIT",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "files": ["dist"],
+    "scripts": {
+        "build": "tsc",
+        "test": "vitest run",
+        "prepare": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.5.0",
+        "vitest": "^2.1.0",
+        "happy-dom": "^15.11.0"
+    }
+}
