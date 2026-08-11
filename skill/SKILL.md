@@ -1,17 +1,16 @@
 ---
 name: electron-music-app-shortcuts
-description: Use when building or editing any of Andy's Electron music apps (carter-drummer, practice-player, tempo-head-tracking-poc, or a new one) — scaffolding a new app, adding a feature that needs keys, or doing any keyboard-shortcut work. Applies the standard shortcut scheme from the keybarre library instead of ad-hoc keydown listeners.
+description: Use when building or editing an Electron music app — a player, practice tool, metronome, drum machine, or DAW-like editor — and the work involves keyboard shortcuts: scaffolding a new app, adding a feature that needs keys, or replacing ad-hoc keydown listeners. Applies the standard shortcut scheme from the keybarre library.
 ---
 
 # Electron Music-App Shortcuts
 
-Andy's Electron music apps share one keyboard standard. It lives in the
-`keybarre` library. Do not write ad-hoc keydown listeners
-in these apps. Wire the library.
+Electron music apps share one keyboard standard. It lives in the `keybarre`
+library. Do not write ad-hoc keydown listeners in these apps. Wire the library.
 
-The keymap lives in the library README:
-https://github.com/andybp85/keybarre#the-standard-keymap
-(local checkout: ~/Projects/keybarre/README.md).
+The keymap lives in the library README, under "The Standard Keymap":
+https://github.com/andybp85/keybarre
+
 Read it there. Do not copy it into app code or into this skill.
 
 ## New app, or adding shortcuts
@@ -22,6 +21,7 @@ Read it there. Do not copy it into app code or into this skill.
 4. Create the dispatcher with `createShortcuts(bindings, handlers)` and call `attach()`.
 5. Implement handlers only for the actions that the app has. Unhandled standard actions stay inert.
 6. Do not add main-process menus or accelerators for shortcuts. The library is renderer-only.
+7. Follow the host app's existing code style and test conventions.
 
 ## Overrides and extras
 
@@ -30,7 +30,7 @@ Read it there. Do not copy it into app code or into this skill.
 - Use `unbind` for standard actions the app does not have. This frees the chord for an extra.
 - Put app-specific shortcuts in `extras`, on keys the standard does not claim.
 - A chord conflict throws at startup. Fix the conflict; do not catch the error.
-- Match the house style: no semicolons, no braces on single-statement blocks. Run `npm run check`.
+- An unknown action name in `overrides`, `unbind`, or `handlers` also throws at startup.
 
 ## Retrofit (an app with existing ad-hoc shortcuts)
 
@@ -38,6 +38,4 @@ Read it there. Do not copy it into app code or into this skill.
 2. Map each one to a standard action, an override (with its "why"), or an extra.
 3. Replace the ad-hoc listener and help overlay with the library.
 4. Keep app dialogs (prompts, editors) on their own capture-phase listeners, above the dispatcher.
-5. Known per-app mappings are in the spec:
-   ~/Projects/keybarre/docs/superpowers/specs/2026-08-10-electron-music-shortcuts-design.md
-   (Migration Notes and Override Policy sections).
+5. Record the mapping in the app's own docs, so the next reader knows why each key moved.
