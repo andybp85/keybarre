@@ -45,7 +45,8 @@ describe('createShortcuts', () => {
             press(' ', {}, el);
         }
         const editable = document.createElement('div');
-        editable.setAttribute('contenteditable', 'true');
+        // happy-dom does not implement isContentEditable; define what a browser would compute
+        Object.defineProperty(editable, 'isContentEditable', { value: true });
         document.body.append(editable);
         press(' ', {}, editable);
         expect(play).not.toHaveBeenCalled();
@@ -79,5 +80,17 @@ describe('createShortcuts', () => {
         shortcuts.detach();
         press(' ');
         expect(play).not.toHaveBeenCalled();
+    });
+
+    it('allows shortcuts when contenteditable="false" (author explicitly non-editable)', () => {
+        const play = vi.fn();
+        shortcuts = createShortcuts(bindings, { 'play-stop': play });
+        shortcuts.attach();
+        const notEditable = document.createElement('div');
+        notEditable.setAttribute('contenteditable', 'false');
+        document.body.append(notEditable);
+        expect(notEditable.isContentEditable).toBe(false);
+        press(' ', {}, notEditable);
+        expect(play).toHaveBeenCalledOnce();
     });
 });

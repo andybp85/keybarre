@@ -3,16 +3,21 @@ import type { ResolvedBinding } from './resolve.js';
 
 export type Handlers = Readonly<Record<string, () => void>>;
 
+export interface Shortcuts {
+    attach(target?: EventTarget): void;
+    detach(): void;
+}
+
 const EDITABLE_TAGS = new Set(['INPUT', 'TEXTAREA', 'SELECT']);
 
 function isEditable(target: EventTarget | null): boolean {
     if (!(target instanceof HTMLElement)) {
         return false;
     }
-    return EDITABLE_TAGS.has(target.tagName) || target.isContentEditable || target.getAttribute('contenteditable') !== null;
+    return EDITABLE_TAGS.has(target.tagName) || target.isContentEditable;
 }
 
-export function createShortcuts(bindings: readonly ResolvedBinding[], handlers: Handlers): { attach(target?: EventTarget): void; detach(): void } {
+export function createShortcuts(bindings: readonly ResolvedBinding[], handlers: Handlers): Shortcuts {
     let attached: EventTarget | null = null;
 
     const onKeydown = (event: Event): void => {
