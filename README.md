@@ -1,4 +1,6 @@
-# music-app-keyboard-shortcuts
+# keybarre
+
+> One grip, all your keys.
 
 This library defines the standard keyboard shortcut scheme for Andy's Electron music apps. It is extracted from
 carter-drummer, practice-player, and tempo-head-tracking-poc. The library holds the keymap data, chord parsing,
@@ -7,7 +9,7 @@ binding resolution, event dispatch, and the help overlay. It has zero runtime de
 ## Install
 
 ```bash
-npm install github:andybp85/music-app-keyboard-shortcuts#semver:^1
+npm install github:andybp85/keybarre#semver:^1
 ```
 
 ## The Standard Keymap
@@ -36,7 +38,7 @@ An app can override a standard key or add extra shortcuts on unclaimed keys. See
 ## Usage
 
 ```ts
-import { createHelpOverlay, createShortcuts, parseChord, resolveBindings, STANDARD_KEYMAP } from 'music-app-keyboard-shortcuts';
+import { createHelpOverlay, createShortcuts, parseChord, resolveBindings, STANDARD_KEYMAP } from 'keybarre';
 
 const bindings = resolveBindings(STANDARD_KEYMAP, {
     // why: digits force the meter in this app, so tempo percent moves off the digit row

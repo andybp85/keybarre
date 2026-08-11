@@ -25,13 +25,13 @@
 - Create: `package.json`, `tsconfig.json`, `vitest.config.ts`
 
 **Interfaces:**
-- Produces: a repo where `npm test` and `npm run build` run. Package name `music-app-keyboard-shortcuts`, ESM, entry `dist/index.js`.
+- Produces: a repo where `npm test` and `npm run build` run. Package name `keybarre`, ESM, entry `dist/index.js`.
 
 - [ ] **Step 1: Write `package.json`**
 
 ```json
 {
-    "name": "music-app-keyboard-shortcuts",
+    "name": "keybarre",
     "version": "0.0.0",
     "description": "Standard keyboard shortcuts for Electron music apps: keymap, dispatcher, help overlay",
     "license": "MIT",
@@ -974,12 +974,12 @@ Expected: all suites pass; `dist/index.js` and `dist/index.d.ts` exist.
 
 Content requirements (write in ASD-STE100 pragmatic style — the simple-english skill):
 - Title, one-paragraph purpose: the standard shortcut scheme for Andy's Electron music apps, extracted from carter-drummer, practice-player, and tempo-head-tracking-poc.
-- Install section with the exact command: `npm install github:andybp85/music-app-keyboard-shortcuts#semver:^1`.
+- Install section with the exact command: `npm install github:andybp85/keybarre#semver:^1`.
 - **The keymap table copied exactly from the spec** (`docs/superpowers/specs/2026-08-10-electron-music-shortcuts-design.md`, "The Standard Keymap" section, without the "Today in" column). This README table is the single source of truth the skill points at.
 - Usage section with this snippet:
 
 ```ts
-import { createHelpOverlay, createShortcuts, parseChord, resolveBindings, STANDARD_KEYMAP } from 'music-app-keyboard-shortcuts';
+import { createHelpOverlay, createShortcuts, parseChord, resolveBindings, STANDARD_KEYMAP } from 'keybarre';
 
 const bindings = resolveBindings(STANDARD_KEYMAP, {
     // why: digits force the meter in this app, so tempo percent moves off the digit row
@@ -1020,23 +1020,23 @@ git commit -m "Export public API; README documents the standard keymap and usage
 ```markdown
 ---
 name: electron-music-app-shortcuts
-description: Use when building or editing any of Andy's Electron music apps (carter-drummer, practice-player, tempo-head-tracking-poc, or a new one) — scaffolding a new app, adding a feature that needs keys, or doing any keyboard-shortcut work. Applies the standard shortcut scheme from the music-app-keyboard-shortcuts library instead of ad-hoc keydown listeners.
+description: Use when building or editing any of Andy's Electron music apps (carter-drummer, practice-player, tempo-head-tracking-poc, or a new one) — scaffolding a new app, adding a feature that needs keys, or doing any keyboard-shortcut work. Applies the standard shortcut scheme from the keybarre library instead of ad-hoc keydown listeners.
 ---
 
 # Electron Music-App Shortcuts
 
 Andy's Electron music apps share one keyboard standard. It lives in the
-`music-app-keyboard-shortcuts` library. Do not write ad-hoc keydown listeners
+`keybarre` library. Do not write ad-hoc keydown listeners
 in these apps. Wire the library.
 
 The keymap lives in the library README:
-https://github.com/andybp85/music-app-keyboard-shortcuts#the-standard-keymap
-(local checkout: ~/Projects/music-app-keyboard-shortcuts/README.md).
+https://github.com/andybp85/keybarre#the-standard-keymap
+(local checkout: ~/Projects/keybarre/README.md).
 Read it there. Do not copy it into app code or into this skill.
 
 ## New app, or adding shortcuts
 
-1. Install the library: `npm install github:andybp85/music-app-keyboard-shortcuts#semver:^1`.
+1. Install the library: `npm install github:andybp85/keybarre#semver:^1`.
 2. In the renderer, build the bindings with `resolveBindings(STANDARD_KEYMAP, { overrides, extras })`.
 3. Create the overlay with `createHelpOverlay(bindings)`. Wire `'toggle-help'` to `overlay.toggle`.
 4. Create the dispatcher with `createShortcuts(bindings, handlers)` and call `attach()`.
@@ -1057,13 +1057,13 @@ Read it there. Do not copy it into app code or into this skill.
 3. Replace the ad-hoc listener and help overlay with the library.
 4. Keep app dialogs (prompts, editors) on their own capture-phase listeners, above the dispatcher.
 5. Known per-app mappings are in the spec:
-   ~/Projects/music-app-keyboard-shortcuts/docs/superpowers/specs/2026-08-10-electron-music-shortcuts-design.md
+   ~/Projects/keybarre/docs/superpowers/specs/2026-08-10-electron-music-shortcuts-design.md
    (Migration Notes and Override Policy sections).
 ```
 
 - [ ] **Step 2: Symlink the skill**
 
-Run: `ln -sfn ~/Projects/music-app-keyboard-shortcuts/skill ~/.claude/skills/electron-music-app-shortcuts`
+Run: `ln -sfn ~/Projects/keybarre/skill ~/.claude/skills/electron-music-app-shortcuts`
 Verify: `ls -l ~/.claude/skills/electron-music-app-shortcuts` shows the link, and the target contains `SKILL.md`.
 
 - [ ] **Step 3: Full verification**

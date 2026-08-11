@@ -26,7 +26,7 @@ Three apps exist, so the rule of three is satisfied. The audit found the same lo
 ## Repo Layout
 
 ```
-music-app-keyboard-shortcuts/
+keybarre/
 ├── src/               # the library: vanilla TS, zero runtime deps, zero Electron imports
 ├── test/
 ├── skill/
@@ -42,7 +42,7 @@ The library is renderer-only. No app defines an Electron `Menu`, registers a `gl
 Apps install the library as a git-URL dependency:
 
 ```
-npm install github:andybp85/music-app-keyboard-shortcuts#semver:^1
+npm install github:andybp85/keybarre#semver:^1
 ```
 
 Versions follow Semantic Versioning 2.0.0 through git tags.
