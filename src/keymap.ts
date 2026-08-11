@@ -1,17 +1,17 @@
-import { parseChord, type Chord } from './chord.js';
+import { parseChord, type Chord } from './chord.js'
 
 export interface Binding {
-    readonly action: string;
-    readonly chord: Chord;
-    readonly label: string;
-    readonly category: string;
-    readonly repeats?: boolean;
+    readonly action: string
+    readonly chord: Chord
+    readonly label: string
+    readonly category: string
+    readonly repeats?: boolean
 }
 
 function bind(action: string, chord: string, label: string, category: string, repeats?: boolean): Binding {
     return repeats === undefined
         ? { action, chord: parseChord(chord), label, category }
-        : { action, chord: parseChord(chord), label, category, repeats };
+        : { action, chord: parseChord(chord), label, category, repeats }
 }
 
 export const STANDARD_KEYMAP: readonly Binding[] = [
@@ -39,4 +39,4 @@ export const STANDARD_KEYMAP: readonly Binding[] = [
     bind('set-loop', 'l', 'Set loop (start, then end)', 'Loop'),
     bind('dismiss', 'Esc', 'Close overlay / clear loop', 'Dismiss'),
     bind('toggle-help', '?', 'Show / hide shortcuts', 'Help'),
-];
+]

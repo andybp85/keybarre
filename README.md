@@ -33,25 +33,30 @@ npm install github:andybp85/keybarre#semver:^1
 | Dismiss   | close overlay, else clear loop  | `Esc`                    |
 | Help      | toggle shortcut overlay         | `?`                      |
 
-An app can override a standard key or add extra shortcuts on unclaimed keys. See the Usage section.
+An app can move a standard key, drop one it does not want, or add extra shortcuts on unclaimed keys. See the
+Usage section.
 
 ## Usage
 
 ```ts
-import { createHelpOverlay, createShortcuts, parseChord, resolveBindings, STANDARD_KEYMAP } from 'keybarre';
+import { createHelpOverlay, createShortcuts, parseChord, resolveBindings, STANDARD_KEYMAP } from 'keybarre'
 
 const bindings = resolveBindings(STANDARD_KEYMAP, {
     // why: digits force the meter in this app, so tempo percent moves off the digit row
-    overrides: { 'tempo-50': null },
+    unbind: ['tempo-50'],
+    overrides: { 'add-marker': parseChord('k') },
     extras: [{ action: 'toggle-bass', chord: parseChord('b'), label: 'Toggle bass stem', category: 'Nav' }],
-});
-const overlay = createHelpOverlay(bindings);
+})
+const overlay = createHelpOverlay(bindings)
 const shortcuts = createShortcuts(bindings, {
     'play-stop': () => player.toggle(),
     'toggle-help': () => overlay.toggle(),
-});
-shortcuts.attach();
+})
+shortcuts.attach()
 ```
+
+`overrides` moves an action to a different chord. `unbind` removes standard actions the app does not have, and
+frees their chords for `extras`. Both throw on an unknown action name.
 
 ## Validation
 
@@ -72,6 +77,17 @@ The dispatcher applies these guards before it calls a handler for a keydown even
 - Ctrl, Meta, and Alt combos pass through untouched. Only Shift is a supported modifier.
 - A repeated keydown (a held key) is ignored, unless the binding sets `repeats: true`.
 - A handled key calls `preventDefault` on the event.
+
+## Development
+
+```bash
+npm test           # vitest, happy-dom
+npm run build      # tsc to dist/
+npm run lint       # eslint: brace omission, TS strictness
+npm run format     # prettier: no semicolons, no arrow parens, single quotes
+```
+
+Prettier and ESLint hold the house style. Run both before a commit.
 
 ## Versioning
 

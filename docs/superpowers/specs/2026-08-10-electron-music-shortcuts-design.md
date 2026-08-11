@@ -103,10 +103,12 @@ Four small modules. Pure functional core, side effects at the edges. This is the
 
 ### `resolve`
 
-`resolveBindings(standard, overrides, extras)` returns the effective binding set. Pure function.
+`resolveBindings(standard, { overrides, unbind, extras })` returns the effective binding set. Pure function.
 
-- `overrides: { [action]: Chord | null }` — `null` unbinds the action.
+- `overrides: { [action]: Chord }` — moves an action to a different chord.
+- `unbind: string[]` — removes standard actions, freeing their chords for extras.
 - `extras: Binding[]` — app-specific additions.
+- An unknown action name in `overrides` or `unbind` throws at startup.
 - A conflict (two actions on one chord) throws at startup.
 
 ### `dispatcher`
