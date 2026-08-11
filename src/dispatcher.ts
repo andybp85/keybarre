@@ -18,6 +18,12 @@ function isEditable(target: EventTarget | null): boolean {
 }
 
 export function createShortcuts(bindings: readonly ResolvedBinding[], handlers: Handlers): Shortcuts {
+    const knownActions = new Set(bindings.map((b) => b.action));
+    const unknownKeys = Object.keys(handlers).filter((key) => !knownActions.has(key));
+    if (unknownKeys.length > 0) {
+        throw new Error(`Handlers key(s) do not match any binding action: ${unknownKeys.join(', ')}`);
+    }
+
     let attached: EventTarget | null = null;
 
     const onKeydown = (event: Event): void => {

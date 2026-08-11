@@ -51,6 +51,16 @@ const shortcuts = createShortcuts(bindings, {
 shortcuts.attach();
 ```
 
+## Validation
+
+Both boundary functions throw on malformed input rather than degrading silently:
+
+- `parseChord` throws on an unsupported modifier, an unrecognized `X+Y` combo, an unknown named key (e.g.
+  `'Spacebar'`), or `Shift+<single character>` — a shifted printable character already arrives as its own
+  `event.key`, so that Shift can never be matched.
+- `createShortcuts` throws if any `handlers` key does not match the `action` of a binding, catching typos
+  (`'play-sotp'`) at creation time instead of leaving the binding silently inert.
+
 ## Guards
 
 The dispatcher applies these guards before it calls a handler for a keydown event:

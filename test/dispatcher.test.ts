@@ -18,6 +18,25 @@ afterEach(() => {
     document.body.innerHTML = '';
 });
 
+describe('createShortcuts validation', () => {
+    it('throws at creation time when a handler key has no matching binding action', () => {
+        expect(() => createShortcuts(bindings, { 'play-sotp': vi.fn() })).toThrow(/play-sotp/);
+    });
+
+    it('names every offending handler key when several are unknown', () => {
+        expect(() => createShortcuts(bindings, { 'play-sotp': vi.fn(), 'bogus-action': vi.fn() }))
+            .toThrow(/play-sotp.*bogus-action|bogus-action.*play-sotp/s);
+    });
+
+    it('allows a handlers object naming only some of the bindings actions', () => {
+        expect(() => createShortcuts(bindings, { 'play-stop': vi.fn(), 'tap-tempo': vi.fn() })).not.toThrow();
+    });
+
+    it('allows an empty handlers object', () => {
+        expect(() => createShortcuts(bindings, {})).not.toThrow();
+    });
+});
+
 describe('createShortcuts', () => {
     it('runs the handler and prevents default for a handled key', () => {
         const play = vi.fn();

@@ -27,6 +27,38 @@ describe('parseChord', () => {
         expect(() => parseChord('')).toThrow(/empty/i);
         expect(() => parseChord('Shift+')).toThrow(/empty/i);
     });
+
+    it('rejects malformed X+Y combos that are not a supported modifier', () => {
+        expect(() => parseChord('shift+x')).toThrow();
+        expect(() => parseChord('foo+bar')).toThrow();
+    });
+
+    it('rejects unknown named keys', () => {
+        expect(() => parseChord('space')).toThrow();
+        expect(() => parseChord('Spacebar')).toThrow();
+    });
+
+    it('rejects Shift+ followed by a single printable character', () => {
+        expect(() => parseChord('Shift+?')).toThrow(/shift/i);
+        expect(() => parseChord('Shift+x')).toThrow(/shift/i);
+    });
+
+    it('keeps a bare "+" key legal', () => {
+        expect(parseChord('+')).toEqual({ key: '+', shift: false });
+    });
+
+    it('still parses every named key used by matchesEvent/formatChord', () => {
+        for (const input of [
+            'Enter', 'Tab', 'Esc', 'Home', 'End', 'PageUp', 'PageDown', 'Delete', 'Backspace',
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'F1', 'F12',
+        ]) {
+            expect(() => parseChord(input)).not.toThrow();
+        }
+    });
+
+    it('still parses Shift+Tab', () => {
+        expect(parseChord('Shift+Tab')).toEqual({ key: 'Tab', shift: true });
+    });
 });
 
 describe('matchesEvent', () => {
