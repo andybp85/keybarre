@@ -1,6 +1,6 @@
 {
     "name": "keybarre",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Standard keyboard shortcuts for Electron music apps: keymap, dispatcher, help overlay",
     "license": "MIT",
     "type": "module",

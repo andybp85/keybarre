@@ -9,7 +9,7 @@ binding resolution, event dispatch, and the help overlay. It has zero runtime de
 ## Install
 
 ```bash
-npm install github:andybp85/keybarre#semver:^1
+npm install github:andybp85/keybarre#semver:^2
 ```
 
 ## The Standard Keymap
@@ -48,15 +48,33 @@ const bindings = resolveBindings(STANDARD_KEYMAP, {
     extras: [{ action: 'toggle-bass', chord: parseChord('b'), label: 'Toggle bass stem', category: 'Nav' }],
 })
 const overlay = createHelpOverlay(bindings)
-const shortcuts = createShortcuts(bindings, {
+const attachShortcuts = createShortcuts(bindings, {
     'play-stop': () => player.toggle(),
     'toggle-help': () => overlay.toggle(),
 })
-shortcuts.attach()
+const detach = attachShortcuts()
 ```
 
 `overrides` moves an action to a different chord. `unbind` removes standard actions the app does not have, and
 frees their chords for `extras`. Both throw on an unknown action name.
+
+## Attaching and detaching
+
+`createShortcuts` returns the attach function; attaching returns its own detach. There is no attached/detached
+flag to keep in sync, and nothing to detach until you have attached.
+
+```ts
+const attachShortcuts = createShortcuts(bindings, handlers)
+
+const detach = attachShortcuts()        // defaults to document
+const detachPanel = attachShortcuts(panel)   // or any EventTarget
+
+detach()   // idempotent, and independent of detachPanel
+```
+
+Attach as many targets as you want; each attachment is released only by the detach it handed back. Attaching the
+same target twice registers one listener, because `addEventListener` ignores a duplicate `(target, type, listener)`
+triple — so the first detach releases it.
 
 ## Validation
 
@@ -92,4 +110,9 @@ Prettier and ESLint hold the house style. Run both before a commit.
 ## Versioning
 
 This package uses semantic versioning through git tags. Pin a major version range in the install command, for
-example `#semver:^1`.
+example `#semver:^2`.
+
+**2.0.0** — `createShortcuts` returns the attach function instead of a `{ attach, detach }` object, and attaching
+returns its own detach. Migration: `const s = createShortcuts(b, h); s.attach()` becomes
+`const detach = createShortcuts(b, h)()`. The `Shortcuts` type is gone; `AttachShortcuts` and `DetachShortcuts`
+replace it.
